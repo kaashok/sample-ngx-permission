@@ -1,0 +1,102 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <table mat-table [dataSource]="userRoles">
+                <ng-container matColumnDef="SNo">
+                    <th mat-header-cell *matHeaderCellDef>S.No</th>
+                    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Role">
+                    <th mat-header-cell *matHeaderCellDef>Role</th>
+                    <td mat-cell *matCellDef="let element">{{element.name}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Description">
+                    <th mat-header-cell *matHeaderCellDef>Description</th>
+                    <td mat-cell *matCellDef="let element">{{element.description}}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <ng-container [formGroup]="permissionForm">
+
+                <div>
+                    <mat-label>User Roles :</mat-label>
+                    <mat-radio-group (change)="onChangeUserRole($event)" aria-label="Select an user role"
+                        formControlName="userRoles">
+                        <mat-radio-button *ngFor="let role of userRoles"
+                            [value]="role.id">{{role.name}}</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+                <div class="row" *ngxPermissionsOnly="'scope.control';
+                authorisedStrategy:authorizedControl.bind(this);
+                unauthorisedStrategy:unauthorizedControl.bind(this);">
+                    <div class="col-md-2">
+                        <mat-form-field>
+                            <mat-label>Name</mat-label>
+                            <input matInput placeholder="Name" formControlName="name">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-2">
+                        <mat-form-field>
+                            <mat-label>Email Id</mat-label>
+                            <input type="email" matInput placeholder="Email Id" formControlName="emailId">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mat-control">
+                            <mat-label>Gender</mat-label>
+                            <mat-radio-group aria-label="Select an gender" formControlName="gender">
+                                <mat-radio-button value="Male">Male</mat-radio-button>
+                                <mat-radio-button value="Female">Female</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <mat-form-field>
+                            <mat-label>Country</mat-label>
+                            <mat-select formControlName="country">
+                                <mat-option [value]="option" *ngFor="let option of options">
+                                    {{option}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="mat-control">
+                            <mat-checkbox formControlName="age">Click Me</mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" *ngxPermissionsOnly="'scope.button';
+                authorisedStrategy:authorizedButton.bind(this);
+                unauthorisedStrategy:unauthorizedButton.bind(this);">                   
+
+                    <div class="col-md-12">
+                        <button [disabled]="disableButton" class="btn" mat-raised-button color="primary">Add</button>
+                        <button [disabled]="disableButton" class="btn" mat-raised-button color="primary">Edit</button>
+                        <button [disabled]="disableButton" class="btn" mat-raised-button color="primary">Delete</button>
+                    </div>
+                </div>
+
+                <div class="row" *ngxPermissionsOnly="'scope.disable.button'">
+                    <div class="col-md-12">
+                        <button class="btn" mat-raised-button color="primary">I will be removed from DOM based on permission</button>                        
+                    </div>
+                </div>
+
+            </ng-container>
+        </div>
+    </div>
+</div>
